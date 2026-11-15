@@ -195,6 +195,7 @@ footer .sig { font-family: var(--font-script); font-size: 44px; color: var(--gol
 @keyframes floaty { 50% { transform: translateY(-18px) rotate(6deg); } }
 .btn.green-big { background: linear-gradient(180deg, #5fd07a, #2a8a4a); box-shadow: 0 6px 0 #1a5a30, 0 0 30px rgba(95, 208, 122, .55); }
 .photo.wide { width: min(86vw, 105vh); top: 55%; }
+.flypet { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 49; will-change: transform; filter: drop-shadow(0 6px 8px rgba(0,0,0,.35)); }
 .petbar { position: fixed; top: 12px; right: 12px; z-index: 75; display: flex; gap: 8px; }
 .petbar .btn { padding: 8px 16px; font-size: 16px; box-shadow: 0 4px 0 #24603a, 0 4px 18px rgba(0,0,0,.4); }
 .petbar .btn img { width: 22px; height: 22px; }
@@ -235,7 +236,7 @@ footer .sig { font-family: var(--font-script); font-size: 44px; color: var(--gol
 <body>
 <canvas id="snow" aria-hidden="true"></canvas>
 <div class="petbar">
-  <button class="btn green" id="petsBtn" type="button"><img src="img/heart.png" alt="">Pets</button>
+  <button class="btn green" id="petsBtn" type="button" aria-pressed="false"><img src="img/heart.png" alt=""><span id="petsLbl">Pets</span></button>
   <button class="btn blue" id="petGalBtn" type="button">Galeria de pets</button>
 </div>
 <img id="sleigh" src="img/sleigh.png" alt="">
@@ -374,11 +375,7 @@ Tia</textarea>
   <audio id="natalAudio" preload="auto"></audio>
 </div>
 
-<div class="parade" id="parade" role="dialog" aria-modal="true" aria-label="Os pets da família">
-  <h2>Os pets da Família Gomes</h2>
-  <div class="track" id="track"></div>
-  <button class="btn small show-close" id="paradeClose" type="button">Fechar</button>
-</div>
+<div id="flyLayer" aria-hidden="true"></div>
 <div class="pgal" id="pgal" role="dialog" aria-modal="true" aria-label="Galeria de pets">
   <button class="btn small show-close" id="pgalClose" type="button" style="position:fixed">Fechar</button>
   <h2>Galeria de pets</h2>
@@ -709,12 +706,43 @@ drawOrns();
 /* pets */
 (function () {
   const PETS = [["bitoca", "Bitoca"], ["bonitinha", "Bonitinha"], ["cara-preta-gorda", "Cara Preta Gorda"], ["cara-preta-mae", "Cara Preta Mae"], ["catarina", "Catarina"], ["dora", "Dora"], ["fofo", "Fofo"], ["fred", "Fred"], ["google", "Google"], ["juca", "Juca"], ["juma", "Juma"], ["lindeza", "Lindeza"], ["maia", "Maia"], ["negrito", "Negrito"], ["panda", "Panda"]];
-  const parade = document.getElementById('parade'), track = document.getElementById('track');
-  const all = PETS.concat(PETS);
-  track.innerHTML = all.map(([s, n], i) => `<img src="img/pets/${s}.jpg" alt="${i < PETS.length ? n : ''}" loading="lazy">`).join('');
-  track.style.setProperty('--dur', (PETS.length * 5) + 's');
-  document.getElementById('petsBtn').addEventListener('click', () => { parade.classList.add('open'); JINGLE.forEach(([f, w]) => bell(f, w, .12)); });
-  document.getElementById('paradeClose').addEventListener('click', () => parade.classList.remove('open'));
+  // pets voando pela página, como a neve
+  const layer = document.getElementById('flyLayer'), petsBtn = document.getElementById('petsBtn'), petsLbl = document.getElementById('petsLbl');
+  let flyers = [], flyOn = false, flyRaf = 0;
+  function spawn(f, top) {
+    const big = innerWidth < 600 ? 64 : 95;
+    f.size = big * (.7 + Math.random() * .6);
+    f.el.style.width = f.size + 'px';
+    f.x = Math.random() * (innerWidth - f.size);
+    f.y = top ? -f.size - Math.random() * innerHeight : Math.random() * innerHeight;
+    f.vy = .5 + Math.random() * .9; f.amp = 20 + Math.random() * 40; f.ph = Math.random() * 6.28; f.rs = (Math.random() - .5) * .6; f.r = Math.random() * 30 - 15;
+  }
+  function buildFlyers() {
+    layer.innerHTML = ''; flyers = [];
+    const n = Math.min(PETS.length, innerWidth < 600 ? 7 : 12);
+    const pick = PETS.slice().sort(() => Math.random() - .5).slice(0, n);
+    pick.forEach(([slug, name]) => {
+      const el = document.createElement('img'); el.className = 'flypet'; el.src = `img/pets/voando/${slug}.png`; el.alt = '';
+      layer.appendChild(el); const f = { el }; spawn(f, false); flyers.push(f);
+    });
+  }
+  function flyTick(t) {
+    for (const f of flyers) {
+      f.y += f.vy; f.r += f.rs;
+      if (f.y > innerHeight + 20) spawn(f, true);
+      const x = f.x + Math.sin(t / 1400 + f.ph) * f.amp;
+      f.el.style.transform = `translate(${x}px, ${f.y}px) rotate(${f.r + Math.sin(t / 900 + f.ph) * 10}deg)`;
+    }
+    flyRaf = requestAnimationFrame(flyTick);
+  }
+  function setFly(on) {
+    flyOn = on; petsBtn.setAttribute('aria-pressed', on); petsLbl.textContent = on ? 'Parar os pets' : 'Pets';
+    cancelAnimationFrame(flyRaf);
+    if (on) { buildFlyers(); flyRaf = requestAnimationFrame(flyTick); } else { layer.innerHTML = ''; flyers = []; }
+    store.set('petsOn', on);
+  }
+  petsBtn.addEventListener('click', () => { setFly(!flyOn); if (flyOn) JINGLE.slice(0, 3).forEach(([f, w]) => bell(f, w, .12)); });
+  if (store.get('petsOn', false)) setFly(true);
   const pgal = document.getElementById('pgal'), pgrid = document.getElementById('pgrid'), pbig = document.getElementById('pbig'), pImg = document.getElementById('pbigImg');
   let pi = 0;
   function big(i) { pi = (i + PETS.length) % PETS.length; pImg.src = `img/pets/${PETS[pi][0]}.jpg`; pImg.alt = PETS[pi][1]; pbig.classList.add('open'); chime(1.3); }
@@ -730,7 +758,7 @@ drawOrns();
   document.getElementById('pClose').addEventListener('click', () => pbig.classList.remove('open'));
   pbig.addEventListener('click', e => { if (e.target === pbig) pbig.classList.remove('open'); });
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { if (pbig.classList.contains('open')) pbig.classList.remove('open'); else { pgal.classList.remove('open'); parade.classList.remove('open'); } }
+    if (e.key === 'Escape') { if (pbig.classList.contains('open')) pbig.classList.remove('open'); else pgal.classList.remove('open'); }
     if (pbig.classList.contains('open') && e.key === 'ArrowRight') big(pi + 1);
     if (pbig.classList.contains('open') && e.key === 'ArrowLeft') big(pi - 1);
   });
