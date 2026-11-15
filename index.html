@@ -195,6 +195,29 @@ footer .sig { font-family: var(--font-script); font-size: 44px; color: var(--gol
 @keyframes floaty { 50% { transform: translateY(-18px) rotate(6deg); } }
 .btn.green-big { background: linear-gradient(180deg, #5fd07a, #2a8a4a); box-shadow: 0 6px 0 #1a5a30, 0 0 30px rgba(95, 208, 122, .55); }
 .photo.wide { width: min(86vw, 105vh); top: 55%; }
+.petbar { position: fixed; top: 12px; right: 12px; z-index: 75; display: flex; gap: 8px; }
+.petbar .btn { padding: 8px 16px; font-size: 16px; box-shadow: 0 4px 0 #24603a, 0 4px 18px rgba(0,0,0,.4); }
+.petbar .btn img { width: 22px; height: 22px; }
+.parade { position: fixed; inset: 0; z-index: 88; display: none; background: radial-gradient(ellipse at 50% 30%, #2c2c6e, #070920 80%); overflow: hidden; }
+.parade.open { display: block; }
+.parade h2, .pgal h2 { position: absolute; left: 0; right: 0; top: 2%; margin: 0; text-align: center; font-family: 'Great Vibes', cursive; font-weight: 400; color: var(--gold); font-size: clamp(40px, 7vw, 84px); text-shadow: 0 0 24px rgba(255, 210, 100, .7), 0 4px 0 #8a4a2a; z-index: 2; }
+.track { position: absolute; top: 50%; left: 0; display: flex; gap: 40px; align-items: center; transform: translateY(-42%); animation: scrollx var(--dur, 60s) linear infinite; will-change: transform; }
+.track img { height: min(68vh, 120vw); width: auto; border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,.5); animation: bobpet 3s ease-in-out infinite; }
+.track img:nth-child(even) { animation-delay: -1.5s; }
+@keyframes scrollx { from { transform: translate(0, -42%); } to { transform: translate(-50%, -42%); } }
+@keyframes bobpet { 0%, 100% { translate: 0 0; rotate: -2deg; } 50% { translate: 0 -16px; rotate: 2deg; } }
+.parade .show-close, .pgal .show-close { z-index: 5; }
+.pgal { position: fixed; inset: 0; z-index: 88; display: none; background: var(--night); overflow-y: auto; padding: 110px 16px 40px; }
+.pgal.open { display: block; }
+.pgal h2 { position: static; margin-bottom: 18px; }
+.pgrid { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; }
+.pgrid button { border: 0; padding: 0; background: none; border-radius: 10px; transition: transform .15s; }
+.pgrid button:hover { transform: translateY(-4px) rotate(-1deg); }
+.pgrid img { width: 100%; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,.4); }
+.pbig { position: fixed; inset: 0; z-index: 95; background: rgba(5, 6, 20, .92); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 14px; padding: 16px; }
+.pbig.open { display: flex; }
+.pbig img { max-height: 82vh; max-width: 94vw; border-radius: 12px; box-shadow: 0 0 60px rgba(255, 216, 107, .5); }
+.pbig .row { display: flex; gap: 10px; }
 .show-close { position: absolute; right: 16px; top: 16px; z-index: 4; }
 .show-bar { position: absolute; left: 50%; bottom: 3%; transform: translateX(-50%); z-index: 4; display: flex; gap: 10px; }
 
@@ -211,6 +234,10 @@ footer .sig { font-family: var(--font-script); font-size: 44px; color: var(--gol
 </head>
 <body>
 <canvas id="snow" aria-hidden="true"></canvas>
+<div class="petbar">
+  <button class="btn green" id="petsBtn" type="button"><img src="img/heart.png" alt="">Pets</button>
+  <button class="btn blue" id="petGalBtn" type="button">Galeria de pets</button>
+</div>
 <img id="sleigh" src="img/sleigh.png" alt="">
 
 <div class="lights" role="button" tabindex="0" aria-label="Mudar o pisca-pisca" title="Clique para mudar o pisca-pisca"></div>
@@ -345,6 +372,25 @@ Tia</textarea>
   <button class="btn small show-close" id="showClose" type="button">Fechar</button>
   <div class="show-bar"><button class="btn gold small" id="showAgain" type="button">Tocar de novo</button></div>
   <audio id="natalAudio" preload="auto"></audio>
+</div>
+
+<div class="parade" id="parade" role="dialog" aria-modal="true" aria-label="Os pets da família">
+  <h2>Os pets da Família Gomes</h2>
+  <div class="track" id="track"></div>
+  <button class="btn small show-close" id="paradeClose" type="button">Fechar</button>
+</div>
+<div class="pgal" id="pgal" role="dialog" aria-modal="true" aria-label="Galeria de pets">
+  <button class="btn small show-close" id="pgalClose" type="button" style="position:fixed">Fechar</button>
+  <h2>Galeria de pets</h2>
+  <div class="pgrid" id="pgrid"></div>
+</div>
+<div class="pbig" id="pbig" role="dialog" aria-modal="true" aria-label="Foto do pet">
+  <img id="pbigImg" src="" alt="">
+  <div class="row">
+    <button class="btn blue small" id="pPrev" type="button">Anterior</button>
+    <button class="btn green small" id="pNext" type="button">Próximo</button>
+    <button class="btn small" id="pClose" type="button">Fechar</button>
+  </div>
 </div>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="pTitle">
@@ -658,6 +704,36 @@ drawOrns();
   document.getElementById('showClose').addEventListener('click', stop);
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && show.classList.contains('open')) stop(); });
   addEventListener('resize', () => { if (show.classList.contains('open')) size(); });
+})();
+
+/* pets */
+(function () {
+  const PETS = [["bitoca", "Bitoca"], ["bonitinha", "Bonitinha"], ["cara-preta-gorda", "Cara Preta Gorda"], ["cara-preta-mae", "Cara Preta Mae"], ["catarina", "Catarina"], ["fofo", "Fofo"], ["fred", "Fred"], ["google", "Google"], ["juca", "Juca"], ["juma", "Juma"], ["lindeza", "Lindeza"], ["maia", "Maia"], ["negrito", "Negrito"], ["panda", "Panda"]];
+  const parade = document.getElementById('parade'), track = document.getElementById('track');
+  const all = PETS.concat(PETS);
+  track.innerHTML = all.map(([s, n], i) => `<img src="img/pets/${s}.jpg" alt="${i < PETS.length ? n : ''}" loading="lazy">`).join('');
+  track.style.setProperty('--dur', (PETS.length * 5) + 's');
+  document.getElementById('petsBtn').addEventListener('click', () => { parade.classList.add('open'); JINGLE.forEach(([f, w]) => bell(f, w, .12)); });
+  document.getElementById('paradeClose').addEventListener('click', () => parade.classList.remove('open'));
+  const pgal = document.getElementById('pgal'), pgrid = document.getElementById('pgrid'), pbig = document.getElementById('pbig'), pImg = document.getElementById('pbigImg');
+  let pi = 0;
+  function big(i) { pi = (i + PETS.length) % PETS.length; pImg.src = `img/pets/${PETS[pi][0]}.jpg`; pImg.alt = PETS[pi][1]; pbig.classList.add('open'); chime(1.3); }
+  PETS.forEach(([s, n], i) => {
+    const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Ver ' + n);
+    b.innerHTML = `<img src="img/pets/${s}.jpg" alt="${n}" loading="lazy">`;
+    b.addEventListener('click', () => big(i)); pgrid.appendChild(b);
+  });
+  document.getElementById('petGalBtn').addEventListener('click', () => pgal.classList.add('open'));
+  document.getElementById('pgalClose').addEventListener('click', () => pgal.classList.remove('open'));
+  document.getElementById('pPrev').addEventListener('click', () => big(pi - 1));
+  document.getElementById('pNext').addEventListener('click', () => big(pi + 1));
+  document.getElementById('pClose').addEventListener('click', () => pbig.classList.remove('open'));
+  pbig.addEventListener('click', e => { if (e.target === pbig) pbig.classList.remove('open'); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { if (pbig.classList.contains('open')) pbig.classList.remove('open'); else { pgal.classList.remove('open'); parade.classList.remove('open'); } }
+    if (pbig.classList.contains('open') && e.key === 'ArrowRight') big(pi + 1);
+    if (pbig.classList.contains('open') && e.key === 'ArrowLeft') big(pi - 1);
+  });
 })();
 
 /* presentes */
