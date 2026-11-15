@@ -193,6 +193,8 @@ footer .sig { font-family: var(--font-script); font-size: 44px; color: var(--gol
 .deco { position: absolute; z-index: 2; width: 120px; opacity: 0; transition: opacity .6s; animation: floaty 3s ease-in-out infinite; }
 .show.reveal .deco { opacity: 1; }
 @keyframes floaty { 50% { transform: translateY(-18px) rotate(6deg); } }
+.btn.green-big { background: linear-gradient(180deg, #5fd07a, #2a8a4a); box-shadow: 0 6px 0 #1a5a30, 0 0 30px rgba(95, 208, 122, .55); }
+.photo.wide { width: min(86vw, 105vh); top: 55%; }
 .show-close { position: absolute; right: 16px; top: 16px; z-index: 4; }
 .show-bar { position: absolute; left: 50%; bottom: 3%; transform: translateX(-50%); z-index: 4; display: flex; gap: 10px; }
 
@@ -228,6 +230,7 @@ footer .sig { font-family: var(--font-script); font-size: 44px; color: var(--gol
   </div>
   <div class="actions">
     <button class="btn big" id="entao" type="button"><img src="img/star-red.png" alt="">Então é Natal</button>
+    <button class="btn big green-big" id="jingle" type="button"><img src="img/bell.png" alt="">Jingle Bell</button>
     <button class="btn gold" id="ring" type="button"><img src="img/bell.png" alt="" id="bellImg">Tocar o sino</button>
     <button class="btn" id="santaBtn" type="button"><img src="img/santa.png" alt="">Chamar o Papai Noel</button>
     <button class="btn blue" id="snowBtn" type="button" aria-pressed="true">Parar a neve</button>
@@ -329,8 +332,8 @@ Tia</textarea>
 
 <div class="show" id="natalShow" role="dialog" aria-modal="true" aria-label="Então é Natal">
   <canvas id="fw" aria-hidden="true"></canvas>
-  <p class="show-title">Então é Natal</p>
-  <img class="photo" src="img/surpresa.jpg" alt="Surpresa de Natal: Papai Noel sorridente">
+  <p class="show-title" id="showTitle">Então é Natal</p>
+  <img class="photo" id="showPhoto" src="img/surpresa.jpg" alt="Surpresa de Natal">
   <img class="deco" src="img/bells.png" alt="" style="left:3%;top:22%;width:170px">
   <img class="deco" src="img/santa.png" alt="" style="left:5%;bottom:8%;width:150px;animation-delay:.5s">
   <img class="deco" src="img/tree.png" alt="" style="right:4%;bottom:5%;width:160px;animation-delay:1s">
@@ -341,7 +344,7 @@ Tia</textarea>
   <img class="deco" src="img/angel.png" alt="" style="right:17%;top:14%;width:110px;animation-delay:.9s">
   <button class="btn small show-close" id="showClose" type="button">Fechar</button>
   <div class="show-bar"><button class="btn gold small" id="showAgain" type="button">Tocar de novo</button></div>
-  <audio id="natalAudio" src="audio/entao-e-natal.mp3" preload="auto"></audio>
+  <audio id="natalAudio" preload="auto"></audio>
 </div>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="pTitle">
@@ -601,7 +604,12 @@ drawOrns();
 
 /* então é natal */
 (function () {
-  const REVEAL_AT = 16.5; // segundos: "o ano termina e nasce outra vez"
+  const SHOWS = {
+    entao: { title: 'Então é Natal', audio: 'audio/entao-e-natal.mp3', img: 'img/surpresa.jpg', at: 16.5, wide: false },
+    jingle: { title: 'Jingle Bell', audio: 'audio/jingle-bell.mp3', img: 'img/jingle.jpg', at: 0.3, wide: true },
+  };
+  let REVEAL_AT = 16.5, curShow = 'entao';
+  const titleEl = document.getElementById('showTitle'), photoEl = document.getElementById('showPhoto');
   const show = document.getElementById('natalShow'), au = document.getElementById('natalAudio'), fw = document.getElementById('fw'), g = fw.getContext('2d');
   let parts = [], raf = 0, nextBurst = 0, revealed = false, closeT = 0;
   const COL = ['#ffd86b', '#ff5a6e', '#6bd0ff', '#8ae07a', '#ff9ad0', '#ffffff', '#c79aff'];
@@ -632,15 +640,21 @@ drawOrns();
     g.globalAlpha = 1; parts = parts.filter(p => p.l > 0 && p.y < fw.height + 20);
     raf = requestAnimationFrame(loop);
   }
-  function start() {
+  function start(key) {
+    if (typeof key === 'string') curShow = key;
+    const cfg = SHOWS[curShow];
+    REVEAL_AT = cfg.at; titleEl.textContent = cfg.title; photoEl.src = cfg.img; photoEl.classList.toggle('wide', cfg.wide);
+    show.setAttribute('aria-label', cfg.title);
+    if (!au.src.endsWith(cfg.audio)) au.src = cfg.audio;
     clearTimeout(closeT); size(); parts = []; revealed = false; show.classList.remove('reveal'); show.classList.add('open');
     g.fillStyle = '#070920'; g.fillRect(0, 0, fw.width, fw.height);
     au.currentTime = 0; au.play().catch(() => {}); cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
   }
   function stop() { au.pause(); cancelAnimationFrame(raf); show.classList.remove('open', 'reveal'); }
   au.addEventListener('ended', () => { closeT = setTimeout(stop, 6000); });
-  document.getElementById('entao').addEventListener('click', start);
-  document.getElementById('showAgain').addEventListener('click', start);
+  document.getElementById('entao').addEventListener('click', () => start('entao'));
+  document.getElementById('jingle').addEventListener('click', () => start('jingle'));
+  document.getElementById('showAgain').addEventListener('click', () => start());
   document.getElementById('showClose').addEventListener('click', stop);
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && show.classList.contains('open')) stop(); });
   addEventListener('resize', () => { if (show.classList.contains('open')) size(); });
