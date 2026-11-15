@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Natal da Família Gomes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Mountains+of+Christmas:wght@700&family=Pacifico&family=Berkshire+Swash&family=Lobster&family=Dancing+Script:wght@700&family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Uma noite de Natal: céu azul-noite, dourado de estrela, vermelho de laço, verde de pinheiro. Layout: capa ilustrada, depois seções em faixas largas, cada uma com seu pisca-pisca. */
+  --night: #141a45;
+  --night-2: #222a66;
+  --gold: #ffd86b;
+  --red: #e0405a;
+  --pine: #3f9460;
+  --snow: #fffaf2;
+  --ink: #2b2240;
+  --muted: #c8c4ec;
+  --font-display: 'Fredoka', 'Nunito', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+  --font-script: 'Great Vibes', cursive;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--night); color: var(--snow);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.55;
+  background-image: radial-gradient(ellipse at 50% -10%, #2c2c6e 0%, var(--night) 60%);
+  background-attachment: fixed;
+}
+img { max-width: 100%; display: block; }
+button { font-family: var(--font-display); cursor: pointer; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, [role="button"]:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+#snow { position: fixed; inset: 0; pointer-events: none; z-index: 50; }
+
+/* pisca-pisca */
+.lights { display: flex; justify-content: space-between; padding: 0 14px; position: relative; z-index: 5; cursor: pointer; height: 46px; }
+.lights svg.wire { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.sec-lights { margin: 0 0 12px; padding: 0 4px; }
+.hero-lights { position: absolute; left: 0; right: 0; top: -14px; z-index: 4; padding: 0 22px; }
+.bulb { width: 14px; height: 22px; border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%; position: relative; animation: blink 1.6s infinite; flex: none; }
+.bulb::before { content: ""; position: absolute; top: -6px; left: 3px; width: 8px; height: 7px; background: #3b2d4a; border-radius: 2px; }
+.bulb:nth-child(5n+1) { background: #ff6b6b; box-shadow: 0 0 14px #ff6b6b; }
+.bulb:nth-child(5n+2) { background: #ffd45a; box-shadow: 0 0 14px #ffd45a; }
+.bulb:nth-child(5n+3) { background: #6bd0ff; box-shadow: 0 0 14px #6bd0ff; }
+.bulb:nth-child(5n+4) { background: #8ae07a; box-shadow: 0 0 14px #8ae07a; }
+.bulb:nth-child(5n+5) { background: #ff9ad0; box-shadow: 0 0 14px #ff9ad0; }
+body.fast .bulb, body.fast .tl { animation-duration: .45s; }
+body.gold .bulb { background: var(--gold) !important; box-shadow: 0 0 16px var(--gold) !important; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+
+/* capa */
+.hero { position: relative; max-width: 1240px; margin: 8px auto 0; padding: 0 16px; }
+.hero-art { border-radius: 28px; border: 4px solid #3b2d4a; box-shadow: 0 20px 60px rgba(0,0,0,.45); position: relative; margin-top: 18px; }
+.hero-art > img { width: 100%; height: auto; border-radius: 24px; }
+.hero-text { position: absolute; left: 0; right: 0; top: 5%; text-align: center; pointer-events: none; }
+.feliz {
+  pointer-events: auto; cursor: pointer; display: inline-block; border: 0; background: none; color: var(--gold);
+  font-family: var(--font-script); font-size: clamp(54px, 10vw, 132px); line-height: 1.05; padding: 0 20px;
+  text-shadow: 0 0 22px rgba(255, 210, 100, .75), 0 4px 0 #8a4a2a; transition: transform .25s;
+}
+.feliz:hover { transform: scale(1.04) rotate(-1deg); }
+.feliz.pop { animation: pop .45s; }
+@keyframes pop { 40% { transform: scale(1.15) rotate(2deg); } }
+.font-hint { display: block; font-family: var(--font-body); font-size: 14px; color: var(--muted); margin-top: 2px; text-shadow: 0 1px 4px #000; }
+.familia { text-align: center; margin: 22px 0 6px; }
+.familia h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 5vw, 54px); margin: 0; letter-spacing: .5px; text-wrap: balance; }
+.familia h1 span { color: var(--gold); }
+.familia p { margin: 4px 0 0; color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 18px 0 8px; }
+.btn {
+  border: 3px solid #3b2d4a; border-radius: 999px; padding: 10px 22px; font-size: 17px; font-weight: 600;
+  background: var(--red); color: #fff; box-shadow: 0 5px 0 #8a2034; transition: transform .1s, box-shadow .1s;
+  display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-family: var(--font-display);
+}
+.btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #8a2034; }
+.btn.green { background: var(--pine); box-shadow: 0 5px 0 #24603a; }
+.btn.gold { background: var(--gold); color: var(--ink); box-shadow: 0 5px 0 #b08a20; }
+.btn.blue { background: #4a78d0; box-shadow: 0 5px 0 #2a4a8a; }
+.btn img { width: 26px; height: 26px; object-fit: contain; }
+.bell-shake { animation: shake .6s; }
+@keyframes shake { 20% { transform: rotate(18deg); } 40% { transform: rotate(-16deg); } 60% { transform: rotate(10deg); } 80% { transform: rotate(-6deg); } }
+
+#sleigh { position: fixed; top: 14%; left: 100%; width: 360px; z-index: 60; pointer-events: none; }
+#sleigh.fly { animation: fly 6s linear forwards; }
+@keyframes fly { 0% { left: 100%; transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(40px) rotate(2deg); } 100% { left: -420px; transform: translateY(-20px) rotate(-3deg); } }
+
+/* seções */
+section { max-width: 1240px; margin: 56px auto 0; padding: 0 16px; }
+.sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+.sec-head h2 { font-family: var(--font-display); font-size: clamp(28px, 4vw, 40px); margin: 0; display: flex; align-items: center; gap: 12px; text-wrap: balance; }
+.sec-head h2 img { width: 52px; height: 52px; object-fit: contain; }
+.sec-head p { margin: 4px 0 0; color: var(--muted); max-width: 60ch; }
+.panel { background: var(--night-2); border: 3px solid #3b2d4a; border-radius: 26px; padding: 24px; box-shadow: 0 10px 0 rgba(0,0,0,.25); }
+
+/* contagem */
+.count { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; max-width: 760px; margin: 0 auto; }
+.tile { background: var(--snow); color: var(--ink); border: 3px solid #3b2d4a; border-radius: 20px; text-align: center; padding: 14px 6px 10px; box-shadow: 0 6px 0 #b8b0d8; }
+.tile b { display: block; font-family: var(--font-display); font-size: clamp(34px, 7vw, 60px); line-height: 1; color: var(--red); font-variant-numeric: tabular-nums; }
+.tile span { font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #6a5a8a; }
+.count-msg { text-align: center; font-family: var(--font-display); font-size: 22px; margin: 16px 0 0; color: var(--gold); }
+
+/* clipes */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 2px solid #3b2d4a; background: var(--snow); color: var(--ink); border-radius: 999px; padding: 6px 14px; font-weight: 600; font-size: 15px; }
+.chip[aria-pressed="true"] { background: var(--gold); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; }
+.card { background: var(--snow); color: var(--ink); border: 3px solid #3b2d4a; border-radius: 22px; overflow: hidden; text-align: left; padding: 0; transition: transform .15s; display: flex; flex-direction: column; }
+.card:hover { transform: translateY(-4px) rotate(-.5deg); }
+.thumb { position: relative; aspect-ratio: 16 / 9; background: #222; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.play { position: absolute; inset: 0; display: grid; place-items: center; }
+.play i { width: 58px; height: 58px; border-radius: 50%; background: rgba(224, 64, 90, .92); border: 3px solid #fff; display: grid; place-items: center; box-shadow: 0 4px 14px rgba(0,0,0,.4); }
+.play i::after { content: ""; border-left: 18px solid #fff; border-top: 11px solid transparent; border-bottom: 11px solid transparent; margin-left: 5px; }
+.dur { position: absolute; right: 8px; bottom: 8px; background: rgba(20,26,69,.85); color: #fff; border-radius: 8px; padding: 1px 8px; font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.card-body { padding: 12px 14px 14px; }
+.card-body h3 { font-family: var(--font-display); font-size: 20px; margin: 0 0 4px; }
+.tag { display: inline-block; font-size: 12px; font-weight: 800; border-radius: 999px; padding: 2px 10px; text-transform: uppercase; letter-spacing: .6px; }
+.tag.fe { background: #dfe6ff; color: #3a4a9a; }
+.tag.festa { background: #ffe0e6; color: #a02040; }
+.tag.familia { background: #dff5e2; color: #2a6a3a; }
+.card.watched .card-body h3::after { content: " ✓"; color: var(--pine); }
+
+/* player */
+.modal { position: fixed; inset: 0; background: rgba(8, 10, 30, .88); display: none; align-items: center; justify-content: center; z-index: 80; padding: 16px; }
+.modal.open { display: flex; }
+.player { width: min(1000px, 100%); background: var(--night-2); border: 3px solid #3b2d4a; border-radius: 24px; overflow: hidden; }
+.player video { width: 100%; display: block; background: #000; aspect-ratio: 16 / 9; }
+.player-bar { display: flex; align-items: center; gap: 10px; padding: 12px 16px; flex-wrap: wrap; }
+.player-bar h3 { font-family: var(--font-display); margin: 0; flex: 1; font-size: 22px; min-width: 160px; }
+.small { padding: 7px 16px; font-size: 15px; }
+.autoplay { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 15px; font-weight: 600; margin: 0; }
+
+/* árvore */
+.tree-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: center; }
+.tree-stage { position: relative; width: min(420px, 100%); margin: 40px auto 0; cursor: crosshair; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+.tree-stage > img.tree-img { width: 100%; pointer-events: none; }
+.tree-lights { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.tl { position: absolute; width: 11px; height: 11px; border-radius: 50%; transform: translate(-50%, -50%); animation: blink 1.4s infinite; border: 2px solid rgba(59, 45, 74, .6); }
+.orn { position: absolute; width: 28px; height: 28px; border-radius: 50%; border: 3px solid #3b2d4a; transform: translate(-50%, -50%) scale(0); animation: drop .35s forwards; z-index: 2; pointer-events: none; }
+.orn::before { content: ""; position: absolute; top: -8px; left: 8px; width: 7px; height: 6px; background: #c8a040; border: 2px solid #3b2d4a; border-radius: 2px; }
+.orn::after { content: ""; position: absolute; top: 3px; left: 5px; width: 7px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.7); }
+.orn.glow { animation: drop .35s forwards, twinkle 1s infinite alternate; }
+@keyframes drop { to { transform: translate(-50%, -50%) scale(1); } }
+@keyframes twinkle { to { filter: brightness(1.6) drop-shadow(0 0 8px currentColor); } }
+.tree-star { position: absolute; left: 50%; top: -9%; width: 26%; transform: translateX(-50%); cursor: pointer; z-index: 3; filter: drop-shadow(0 0 8px rgba(255, 74, 94, .7)); transition: filter .4s; }
+.tree-star.lit { filter: drop-shadow(0 0 22px #ff4a5e) drop-shadow(0 0 40px #ff8a9a) brightness(1.15); animation: spin 5s ease-in-out infinite; }
+@keyframes spin { 50% { transform: translateX(-50%) rotate(12deg) scale(1.1); } }
+.tree-info h3 { font-family: var(--font-display); font-size: 26px; margin: 0 0 6px; }
+.colors { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+.swatch { width: 40px; height: 40px; border-radius: 50%; border: 3px solid #3b2d4a; }
+.swatch[aria-pressed="true"] { outline: 4px solid var(--snow); outline-offset: 2px; }
+.counter { font-family: var(--font-display); font-size: 20px; color: var(--gold); }
+
+/* presentes */
+.gifts { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+.gift { background: none; border: 0; padding: 0; position: relative; min-height: 180px; color: var(--ink); }
+.gift .box { display: flex; flex-direction: column; align-items: center; gap: 4px; transition: transform .3s; }
+.gift .box img { width: 110px; }
+.gift .box b { font-family: var(--font-display); color: var(--snow); font-size: 20px; }
+.gift:hover .box { transform: rotate(-4deg) scale(1.05); }
+.gift .note { display: none; background: var(--snow); border: 3px solid #3b2d4a; border-radius: 18px; padding: 12px; font-size: 15px; font-weight: 600; text-align: left; height: 100%; min-height: 180px; font-family: var(--font-body); }
+.gift .note strong { display: block; font-family: var(--font-display); color: var(--red); font-size: 17px; margin-bottom: 4px; }
+.gift.open .box { display: none; }
+.gift.open .note { display: block; animation: pop .4s; }
+
+/* amigo secreto */
+.amigo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+label.field { font-weight: 800; display: block; margin-bottom: 6px; }
+textarea, select { width: 100%; border: 3px solid #3b2d4a; border-radius: 16px; padding: 12px; font: inherit; color: var(--ink); background: var(--snow); }
+textarea { min-height: 190px; resize: vertical; }
+.reveal { background: var(--snow); color: var(--ink); border: 3px solid #3b2d4a; border-radius: 20px; padding: 18px; text-align: center; min-height: 140px; display: grid; place-items: center; margin-top: 14px; }
+.reveal .who { font-family: 'Pacifico', cursive; font-size: 40px; color: var(--red); line-height: 1.2; }
+.err { color: #ffd0d0; font-weight: 700; min-height: 1.5em; margin: 8px 0 0; }
+
+footer { text-align: center; padding: 20px 16px 40px; color: var(--muted); }
+footer .sig { font-family: var(--font-script); font-size: 44px; color: var(--gold); display: block; }
+
+@media (max-width: 760px) {
+  .tree-wrap, .amigo { grid-template-columns: 1fr; }
+  .count { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero-text { top: 3%; }
+  .font-hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<canvas id="snow" aria-hidden="true"></canvas>
+<img id="sleigh" src="img/sleigh.png" alt="">
+
+<div class="lights" role="button" tabindex="0" aria-label="Mudar o pisca-pisca" title="Clique para mudar o pisca-pisca"></div>
+
+<header class="hero">
+  <div class="hero-art">
+    <div class="lights hero-lights" role="button" tabindex="0" aria-label="Mudar o pisca-pisca"></div>
+    <img src="img/hero.jpg" alt="Ilustração da família reunida ao redor do presépio, com anjos, estrela e lua">
+    <div class="hero-text">
+      <button class="feliz" id="feliz" type="button" aria-label="Feliz Natal: toque para trocar a letra">Feliz Natal</button>
+      <span class="font-hint">toque no Feliz Natal para trocar a letra</span>
+    </div>
+  </div>
+  <div class="familia">
+    <h1>Natal da <span>Família Gomes</span></h1>
+    <p>25 de dezembro de 2026 · clipes, brincadeiras e muito amor</p>
+  </div>
+  <div class="actions">
+    <button class="btn gold" id="ring" type="button"><img src="img/bell.png" alt="" id="bellImg">Tocar o sino</button>
+    <button class="btn" id="santaBtn" type="button"><img src="img/santa.png" alt="">Chamar o Papai Noel</button>
+    <button class="btn blue" id="snowBtn" type="button" aria-pressed="true">Parar a neve</button>
+    <a class="btn green" href="#clipes">Ver os clipes</a>
+  </div>
+</header>
+
+<section id="contagem">
+  <div class="lights sec-lights" role="button" tabindex="0" aria-label="Mudar o pisca-pisca"></div>
+  <div class="sec-head"><div><h2><img src="img/star.png" alt="">Quanto falta para o Natal</h2><p>Contando até a meia-noite do dia 25.</p></div></div>
+  <div class="panel">
+    <div class="count">
+      <div class="tile"><b id="cd-d">0</b><span>dias</span></div>
+      <div class="tile"><b id="cd-h">0</b><span>horas</span></div>
+      <div class="tile"><b id="cd-m">0</b><span>minutos</span></div>
+      <div class="tile"><b id="cd-s">0</b><span>segundos</span></div>
+    </div>
+    <p class="count-msg" id="count-msg">Já dá para sentir o cheirinho de rabanada!</p>
+  </div>
+</section>
+
+<section id="clipes">
+  <div class="lights sec-lights" role="button" tabindex="0" aria-label="Mudar o pisca-pisca"></div>
+  <div class="sec-head">
+    <div><h2><img src="img/bells.png" alt="">Os clipes de Natal</h2><p>14 músicas de Chitãozinho &amp; Xororó, cada uma com seu desenho animado. Toque num clipe para assistir, ou toque todos em sequência.</p></div>
+    <div class="actions" style="margin:0"><button class="btn" id="playAll" type="button">Tocar todos</button></div>
+  </div>
+  <div class="chips" role="group" aria-label="Filtrar clipes" style="margin-bottom:16px">
+    <button class="chip" type="button" data-f="all" aria-pressed="true">Todos</button>
+    <button class="chip" type="button" data-f="fe" aria-pressed="false">Presépio e fé</button>
+    <button class="chip" type="button" data-f="festa" aria-pressed="false">Festa</button>
+    <button class="chip" type="button" data-f="familia" aria-pressed="false">Família</button>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section id="arvore">
+  <div class="lights sec-lights" role="button" tabindex="0" aria-label="Mudar o pisca-pisca"></div>
+  <div class="sec-head"><div><h2><img src="img/gift.png" alt="">Monte a árvore da família</h2><p>Escolha uma cor e toque na árvore para pendurar uma bolinha. Toque na estrela vermelha para acender.</p></div></div>
+  <div class="panel tree-wrap">
+    <div class="tree-stage" id="treeStage">
+      <img src="img/tree.png" alt="Árvore de Natal para enfeitar" class="tree-img" draggable="false">
+      <div class="tree-lights" id="treeLights" aria-hidden="true"></div>
+      <img src="img/star-red.png" alt="Estrela vermelha: toque para acender" class="tree-star" id="treeStar" draggable="false">
+    </div>
+    <div class="tree-info">
+      <h3>Cada um pendura a sua</h3>
+      <p>Passe o celular para cada pessoa da família colocar uma bolinha. Quando a árvore estiver cheia, acenda as bolinhas.</p>
+      <div class="colors" id="colors" role="group" aria-label="Cor da bolinha"></div>
+      <p class="counter" id="ornCount">Nenhuma bolinha ainda</p>
+      <div class="actions" style="justify-content:flex-start">
+        <button class="btn gold small" id="glowBtn" type="button">Fazer as bolinhas brilharem</button>
+        <button class="btn blue small" id="undoBtn" type="button">Tirar a última</button>
+        <button class="btn small" id="clearBtn" type="button">Tirar todas</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="presentes">
+  <div class="lights sec-lights" role="button" tabindex="0" aria-label="Mudar o pisca-pisca"></div>
+  <div class="sec-head"><div><h2><img src="img/santa.png" alt="">Presentes-surpresa</h2><p>Cada presente tem uma brincadeira para a família. Escolha um número, abra e cumpra o desafio.</p></div>
+    <button class="btn blue small" id="closeGifts" type="button">Embrulhar de novo</button></div>
+  <div class="gifts" id="gifts"></div>
+</section>
+
+<section id="amigo">
+  <div class="lights sec-lights" role="button" tabindex="0" aria-label="Mudar o pisca-pisca"></div>
+  <div class="sec-head"><div><h2><img src="img/gift2.png" alt="">Sorteio do amigo secreto</h2><p>Escreva um nome por linha e sorteie. Depois cada pessoa escolhe o próprio nome e vê, escondida, quem tirou.</p></div></div>
+  <div class="panel amigo">
+    <div>
+      <label class="field" for="names">Quem vai participar</label>
+      <textarea id="names" placeholder="Um nome por linha">Vovô
+Vovó
+Papai
+Mamãe
+Tio
+Tia</textarea>
+      <div class="actions" style="justify-content:flex-start"><button class="btn" id="draw" type="button">Sortear</button></div>
+      <p class="err" id="drawErr" role="status"></p>
+    </div>
+    <div>
+      <label class="field" for="me">Eu sou</label>
+      <select id="me" disabled><option>Faça o sorteio primeiro</option></select>
+      <div class="actions" style="justify-content:flex-start">
+        <button class="btn gold" id="show" type="button" disabled>Ver quem eu tirei</button>
+        <button class="btn blue" id="hide" type="button" disabled>Esconder</button>
+      </div>
+      <div class="reveal" id="reveal" aria-live="polite"><span>Ninguém olhando? Então escolha seu nome e toque em “Ver quem eu tirei”.</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="lights sec-lights" role="button" tabindex="0" aria-label="Mudar o pisca-pisca" style="max-width:1240px;margin:60px auto 0"></div>
+<footer>
+  <span class="sig">Feliz Natal, Família Gomes!</span>
+  Feito com carinho para o Natal de 2026. Clipes com músicas de Chitãozinho &amp; Xororó.
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="pTitle">
+  <div class="player">
+    <video id="video" controls playsinline preload="metadata"></video>
+    <div class="player-bar">
+      <h3 id="pTitle">Clipe</h3>
+      <label class="autoplay" for="auto"><input type="checkbox" id="auto"> tocar o próximo</label>
+      <button class="btn blue small" id="prev" type="button">Anterior</button>
+      <button class="btn green small" id="next" type="button">Próximo</button>
+      <button class="btn small" id="close" type="button">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CLIPS = [
+  ['homem-de-nazare', 'O Homem de Nazaré', '4:56', 'fe'],
+  ['noite-feliz', 'Noite Feliz', '3:08', 'fe'],
+  ['um-sino-feliz', 'Um Sino Feliz', '2:11', 'festa'],
+  ['boas-festas', 'Boas Festas', '3:14', 'festa'],
+  ['cante-a-cancao', 'Cante a Canção', '3:19', 'familia'],
+  ['hino-de-reis', 'Hino de Reis', '3:30', 'fe'],
+  ['meu-senhor', 'Meu Senhor', '4:19', 'fe'],
+  ['natal-branco', 'Natal Branco', '4:40', 'festa'],
+  ['natal-das-criancas', 'Natal das Crianças', '3:25', 'festa'],
+  ['nossa-senhora', 'Nossa Senhora', '5:17', 'fe'],
+  ['presente-de-natal', 'Presente de Natal', '4:28', 'festa'],
+  ['rastros-na-areia', 'Rastros na Areia', '3:27', 'fe'],
+  ['se-uma-estrela-aparecer', 'Se Uma Estrela Aparecer', '3:36', 'fe'],
+  ['uma-grande-familia', 'Uma Grande Família', '3:57', 'familia'],
+];
+const TAG = { fe: 'Presépio e fé', festa: 'Festa', familia: 'Família' };
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* som */
+let actx = null;
+function ac() { try { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (e) { actx = null; } return actx; }
+function bell(freq, when = 0, vol = .25) {
+  const a = ac(); if (!a) return;
+  const t = a.currentTime + when;
+  [[1, 1], [2.76, .5], [5.4, .25], [8.93, .12]].forEach(([m, g]) => {
+    const o = a.createOscillator(), v = a.createGain();
+    o.frequency.value = freq * m; o.type = 'sine';
+    v.gain.setValueAtTime(0, t); v.gain.linearRampToValueAtTime(vol * g, t + .005); v.gain.exponentialRampToValueAtTime(.0001, t + 1.8 / Math.sqrt(m));
+    o.connect(v).connect(a.destination); o.start(t); o.stop(t + 2);
+  });
+}
+function chime(s = 1) { bell(880 * s, 0, .12); }
+const JINGLE = [[659, 0], [659, .22], [659, .44], [659, .88], [659, 1.1], [659, 1.32], [659, 1.76], [784, 1.98], [523, 2.2], [587, 2.42], [659, 2.64]];
+
+/* pisca-pisca */
+let lmode = 0;
+function cycleLights() { lmode = (lmode + 1) % 3; document.body.classList.toggle('fast', lmode === 1); document.body.classList.toggle('gold', lmode === 2); chime(1.2); }
+function fillLights() {
+  document.querySelectorAll('.lights').forEach(el => {
+    el.innerHTML = '';
+    const w = el.clientWidth || innerWidth, n = Math.max(8, Math.floor(w / 44)), waves = Math.max(2, Math.round(n / 7));
+    for (let i = 0; i < n; i++) {
+      const b = document.createElement('span'); b.className = 'bulb';
+      b.style.marginTop = (8 + 12 * Math.abs(Math.sin((i + .5) / n * Math.PI * waves))) + 'px';
+      b.style.animationDelay = (i % 5) * .3 + 's';
+      el.appendChild(b);
+    }
+    const r = el.getBoundingClientRect();
+    const ps = [...el.querySelectorAll('.bulb')].map(b => { const q = b.getBoundingClientRect(); return [q.left + q.width / 2 - r.left, q.top - 5 - r.top]; });
+    if (!ps.length) return;
+    let d = `M 0 ${ps[0][1] - 6}`;
+    ps.forEach((p, i) => { const prev = i ? ps[i - 1] : [0, ps[0][1] - 6]; d += ` Q ${(prev[0] + p[0]) / 2} ${Math.max(prev[1], p[1]) + 8} ${p[0]} ${p[1]}`; });
+    const last = ps[ps.length - 1]; d += ` Q ${(last[0] + r.width) / 2} ${last[1] + 8} ${r.width} ${last[1] - 6}`;
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('class', 'wire'); svg.setAttribute('aria-hidden', 'true');
+    svg.innerHTML = `<path d="${d}" fill="none" stroke="#1a1430" stroke-width="3" stroke-linecap="round"/>`;
+    el.prepend(svg);
+  });
+}
+document.querySelectorAll('.lights').forEach(el => {
+  el.addEventListener('click', cycleLights);
+  el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); cycleLights(); } });
+});
+fillLights();
+addEventListener('load', fillLights);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fillLights);
+let lt_ = 0; addEventListener('resize', () => { clearTimeout(lt_); lt_ = setTimeout(fillLights, 200); });
+
+/* letras do Feliz Natal */
+const FONTS = ["'Great Vibes', cursive", "'Mountains of Christmas', cursive", "'Pacifico', cursive", "'Berkshire Swash', cursive", "'Lobster', cursive", "'Dancing Script', cursive"];
+let fi = 0;
+const feliz = document.getElementById('feliz');
+feliz.addEventListener('click', () => {
+  fi = (fi + 1) % FONTS.length; feliz.style.fontFamily = FONTS[fi];
+  feliz.classList.remove('pop'); void feliz.offsetWidth; feliz.classList.add('pop'); chime(1.5);
+});
+
+/* sino */
+const bellImg = document.getElementById('bellImg');
+document.getElementById('ring').addEventListener('click', () => {
+  JINGLE.forEach(([f, w]) => bell(f, w, .2));
+  bellImg.classList.remove('bell-shake'); void bellImg.offsetWidth; bellImg.classList.add('bell-shake');
+  burst(innerWidth / 2, 300);
+});
+
+/* trenó */
+const sleigh = document.getElementById('sleigh');
+document.getElementById('santaBtn').addEventListener('click', () => {
+  sleigh.classList.remove('fly'); void sleigh.offsetWidth; sleigh.classList.add('fly');
+  [0, .5, 1, 1.5, 2, 2.5].forEach((w, i) => bell(i % 2 ? 1318 : 1175, w, .08));
+  const a = ac(); if (a) {
+    [0, .45, .9].forEach(w => { const o = a.createOscillator(), g = a.createGain(), t = a.currentTime + 3 + w;
+      o.type = 'sawtooth'; o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(95, t + .3);
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.07, t + .03); g.gain.exponentialRampToValueAtTime(.0001, t + .35);
+      o.connect(g).connect(a.destination); o.start(t); o.stop(t + .4); });
+  }
+});
+
+/* neve e brilhos */
+const cv = document.getElementById('snow'), cx = cv.getContext('2d');
+let flakes = [], sparks = [], snowing = true, running = false;
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function mk(top) { return { x: Math.random() * cv.width, y: top ? -10 : Math.random() * cv.height, r: 1 + Math.random() * 3.2, s: .4 + Math.random() * 1.1, p: Math.random() * 6 }; }
+function resize() { cv.width = innerWidth; cv.height = innerHeight; flakes = Array.from({ length: Math.round(innerWidth / 12) }, () => mk()); }
+function burst(x, y) { for (let i = 0; i < 40; i++) { const a = Math.random() * 6.28, v = 2 + Math.random() * 5; sparks.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 2, l: 1, c: ['#ffd86b', '#ff6b8a', '#6bd0ff', '#8ae07a', '#fff'][i % 5] }); } start(); }
+function tick() {
+  cx.clearRect(0, 0, cv.width, cv.height);
+  if (snowing) {
+    cx.fillStyle = 'rgba(255,255,255,.85)';
+    for (const f of flakes) { f.y += f.s; f.x += Math.sin((f.y + f.p * 50) / 40) * .5; if (f.y > cv.height + 5) Object.assign(f, mk(true)); cx.beginPath(); cx.arc(f.x, f.y, f.r, 0, 6.28); cx.fill(); }
+  }
+  for (const s of sparks) { s.x += s.vx; s.y += s.vy; s.vy += .15; s.l -= .018; cx.globalAlpha = Math.max(0, s.l); cx.fillStyle = s.c; cx.beginPath(); cx.arc(s.x, s.y, 3.5, 0, 6.28); cx.fill(); }
+  cx.globalAlpha = 1; sparks = sparks.filter(s => s.l > 0);
+  if (snowing || sparks.length) requestAnimationFrame(tick); else running = false;
+}
+function start() { if (!running) { running = true; requestAnimationFrame(tick); } }
+addEventListener('resize', resize); resize();
+const snowBtn = document.getElementById('snowBtn');
+function setSnow(on) { snowing = on; snowBtn.textContent = on ? 'Parar a neve' : 'Fazer nevar'; snowBtn.setAttribute('aria-pressed', on); if (on) start(); }
+setSnow(!reduce);
+snowBtn.addEventListener('click', () => setSnow(!snowing));
+
+/* contagem */
+const XMAS = new Date(2026, 11, 25, 0, 0, 0);
+const MSGS = ['Já dá para sentir o cheirinho de rabanada!', 'O Papai Noel já está conferindo a lista.', 'Hora de ensaiar as músicas dos clipes!', 'As renas estão fazendo alongamento.'];
+function count() {
+  const now = new Date(), d = XMAS - now, el = id => document.getElementById(id);
+  if (d <= 0) {
+    ['d', 'h', 'm', 's'].forEach(k => el('cd-' + k).textContent = '0');
+    el('count-msg').textContent = now.getMonth() === 11 && now.getDate() === 25 ? 'É Natal! Feliz Natal, Família Gomes!' : 'O Natal de 2026 já passou. Que venha o próximo!';
+    return;
+  }
+  el('cd-d').textContent = Math.floor(d / 864e5); el('cd-h').textContent = Math.floor(d / 36e5) % 24;
+  el('cd-m').textContent = Math.floor(d / 6e4) % 60; el('cd-s').textContent = Math.floor(d / 1e3) % 60;
+  el('count-msg').textContent = MSGS[Math.floor(now / 15000) % MSGS.length];
+}
+count(); setInterval(count, 1000);
+
+/* clipes */
+const grid = document.getElementById('grid');
+const watched = new Set(store.get('watched', []));
+let filter = 'all', list = CLIPS.slice(), cur = 0;
+function renderGrid() {
+  grid.innerHTML = '';
+  list = CLIPS.filter(c => filter === 'all' || c[3] === filter);
+  list.forEach((c, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'card' + (watched.has(c[0]) ? ' watched' : '');
+    b.setAttribute('aria-label', 'Assistir ' + c[1]);
+    b.innerHTML = `<div class="thumb"><img src="img/${c[0]}.jpg" alt="" loading="lazy"><span class="play"><i></i></span><span class="dur">${c[2]}</span></div>
+      <div class="card-body"><h3>${c[1]}</h3><span class="tag ${c[3]}">${TAG[c[3]]}</span></div>`;
+    b.addEventListener('click', () => openClip(i));
+    grid.appendChild(b);
+  });
+}
+document.querySelectorAll('.chip').forEach(ch => ch.addEventListener('click', () => {
+  filter = ch.dataset.f; document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x === ch)); renderGrid();
+}));
+renderGrid();
+const modal = document.getElementById('modal'), video = document.getElementById('video'), auto = document.getElementById('auto');
+function openClip(i, autoplayNext) {
+  cur = (i + list.length) % list.length; const c = list[cur];
+  if (autoplayNext !== undefined) auto.checked = autoplayNext;
+  video.src = 'v/' + c[0] + '.mp4'; video.poster = 'img/' + c[0] + '.jpg';
+  document.getElementById('pTitle').textContent = c[1];
+  modal.classList.add('open');
+  video.play().catch(() => {});
+  watched.add(c[0]); store.set('watched', [...watched]);
+}
+function closeClip() { video.pause(); modal.classList.remove('open'); renderGrid(); }
+document.getElementById('playAll').addEventListener('click', () => openClip(0, true));
+document.getElementById('next').addEventListener('click', () => openClip(cur + 1));
+document.getElementById('prev').addEventListener('click', () => openClip(cur - 1));
+document.getElementById('close').addEventListener('click', closeClip);
+modal.addEventListener('click', e => { if (e.target === modal) closeClip(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeClip(); });
+video.addEventListener('ended', () => { if (auto.checked) openClip(cur + 1); });
+
+/* árvore */
+const OCOL = ['#ff5c6c', '#ffd45a', '#6bd0ff', '#8ae07a', '#ff9ad0', '#c79aff', '#ffffff'];
+let ocol = OCOL[0];
+const colors = document.getElementById('colors');
+OCOL.forEach((c, i) => {
+  const s = document.createElement('button'); s.type = 'button'; s.className = 'swatch'; s.style.background = c;
+  s.setAttribute('aria-label', 'Cor ' + (i + 1)); s.setAttribute('aria-pressed', i === 0);
+  s.addEventListener('click', () => { ocol = c; colors.querySelectorAll('.swatch').forEach(x => x.setAttribute('aria-pressed', x === s)); });
+  colors.appendChild(s);
+});
+const stage = document.getElementById('treeStage'), treeStar = document.getElementById('treeStar'), ornCount = document.getElementById('ornCount');
+let orns = store.get('orns', []), glowing = false;
+// a copa da árvore (em % da imagem): só aceita bolinhas dentro do triângulo verde
+function onTree(x, y) {
+  if (y < 10 || y > 93) return false;
+  const half = 4 + (y - 10) / 83 * 46;
+  return Math.abs(x - 50) <= half;
+}
+function drawOrns() {
+  stage.querySelectorAll('.orn').forEach(o => o.remove());
+  orns.forEach(([x, y, c], i) => {
+    const o = document.createElement('span'); o.className = 'orn' + (glowing ? ' glow' : '');
+    o.style.left = x + '%'; o.style.top = y + '%'; o.style.background = c; o.style.color = c;
+    if (glowing) o.style.animationDelay = `0s, ${(i % 5) * .2}s`;
+    stage.appendChild(o);
+  });
+  ornCount.textContent = orns.length ? `${orns.length} ${orns.length === 1 ? 'bolinha pendurada' : 'bolinhas penduradas'}` : 'Nenhuma bolinha ainda';
+}
+stage.addEventListener('pointerup', e => {
+  if (e.target === treeStar) return;
+  const r = stage.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width * 100, y = (e.clientY - r.top) / r.height * 100;
+  if (!onTree(x, y)) { chime(.6); return; }
+  orns.push([+x.toFixed(1), +y.toFixed(1), ocol]); store.set('orns', orns); drawOrns(); chime(1 + Math.random());
+});
+treeStar.addEventListener('click', () => {
+  treeStar.classList.toggle('lit');
+  const r = treeStar.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2);
+  JINGLE.slice(7).forEach(([f, w]) => bell(f, w - 1.98, .15));
+});
+document.getElementById('glowBtn').addEventListener('click', e => { glowing = !glowing; e.currentTarget.textContent = glowing ? 'Parar o brilho' : 'Fazer as bolinhas brilharem'; drawOrns(); });
+document.getElementById('undoBtn').addEventListener('click', () => { orns.pop(); store.set('orns', orns); drawOrns(); });
+document.getElementById('clearBtn').addEventListener('click', () => { orns = []; store.set('orns', orns); drawOrns(); });
+drawOrns();
+(function () {
+  const tl = document.getElementById('treeLights'), cols = ['#ff5c6c', '#ffd45a', '#6bd0ff', '#8ae07a', '#ff9ad0', '#ffffff'];
+  const rows = [[30, -1], [48, 1], [66, -1], [82, 1]];
+  let k = 0;
+  rows.forEach(([y, dir]) => {
+    const n = 7;
+    for (let i = 0; i <= n; i++) {
+      const u = i / n, yy = y + dir * (u - .5) * 10 + 3 * Math.sin(u * Math.PI);
+      const half = (4 + (yy - 10) / 83 * 46) * .85, x = 50 - half + u * half * 2;
+      const d = document.createElement('span'); d.className = 'tl'; const c = cols[k % 6];
+      d.style.cssText = `left:${x}%;top:${yy}%;background:${c};box-shadow:0 0 10px ${c};animation-delay:${(k % 4) * .35}s`;
+      tl.appendChild(d); k++;
+    }
+  });
+})();
+
+/* presentes */
+const GIFTS = [
+  ['Mímica de Natal', 'Sem falar nada, imite uma rena, um anjo ou o Papai Noel. Quem acertar primeiro escolhe o próximo presente.'],
+  ['Coral da família', 'Todo mundo canta junto o refrão de “Noite Feliz”. Valem as palmas!'],
+  ['Abraço coletivo', 'Hora do abraço em grupo. Ninguém fica de fora, nem quem diz que não gosta.'],
+  ['Desafio do sino', 'Toque o sino lá em cima e cante “Bate o sino pequenino” sem errar a letra.'],
+  ['Memória boa', 'Cada um conta o Natal mais engraçado que já viveu.'],
+  ['Papai Noel por um minuto', 'Quem abriu vira o Papai Noel: dê três “ho ho ho” e entregue um elogio para cada pessoa da sala.'],
+  ['Estátua natalina', 'Coloque um clipe para tocar. Quando alguém pausar, todo mundo congela. Quem mexer paga uma prenda.'],
+  ['Desejo para o ano novo', 'Cada pessoa fala um desejo bom para alguém da família em 2027.'],
+  ['Dança do Um Sino Feliz', 'Coloque o clipe “Um Sino Feliz” e todo mundo dança até o fim da música.'],
+  ['Adivinha o clipe', 'Alguém cantarola uma música dos clipes de boca fechada. Quem adivinhar ganha a próxima rabanada.'],
+  ['Foto oficial', 'Hora da foto da Família Gomes! Todo mundo junto, com a cara mais natalina possível.'],
+  ['Brinde ao amor', 'Levante o copo e faça um brinde à família. Pode ser suco, refrigerante ou água!'],
+];
+const giftsEl = document.getElementById('gifts');
+const GIMG = ['gift', 'gift2', 'gift3'];
+let opened = new Set(store.get('opened', []));
+function drawGifts() {
+  giftsEl.innerHTML = '';
+  GIFTS.forEach(([t, d], i) => {
+    const g = document.createElement('button'); g.type = 'button'; g.className = 'gift' + (opened.has(i) ? ' open' : '');
+    g.setAttribute('aria-label', opened.has(i) ? t : 'Abrir o presente ' + (i + 1));
+    g.innerHTML = `<span class="box"><img src="img/${GIMG[i % 3]}.png" alt=""><b>${i + 1}</b></span><span class="note"><strong>${t}</strong>${d}</span>`;
+    g.addEventListener('click', () => {
+      if (opened.has(i)) return; opened.add(i); store.set('opened', [...opened]);
+      const r = g.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 3); bell(1046, 0, .15); bell(1318, .12, .12);
+      drawGifts();
+    });
+    giftsEl.appendChild(g);
+  });
+}
+document.getElementById('closeGifts').addEventListener('click', () => { opened = new Set(); store.set('opened', []); drawGifts(); });
+drawGifts();
+
+/* amigo secreto */
+const namesEl = document.getElementById('names'), meEl = document.getElementById('me'), reveal = document.getElementById('reveal');
+const showB = document.getElementById('show'), hideB = document.getElementById('hide'), errEl = document.getElementById('drawErr');
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+let pairs = store.get('pairs', null);
+const savedNames = store.get('names', null); if (savedNames) namesEl.value = savedNames;
+function setupSelect() {
+  if (!pairs) return;
+  meEl.innerHTML = Object.keys(pairs).map(n => `<option>${esc(n)}</option>`).join('');
+  meEl.disabled = false; showB.disabled = false; hideB.disabled = false;
+}
+function derange(arr) {
+  for (let tries = 0; tries < 1000; tries++) {
+    const s = arr.slice();
+    for (let i = s.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; }
+    if (s.every((v, i) => v !== arr[i])) return s;
+  }
+  return null;
+}
+document.getElementById('draw').addEventListener('click', () => {
+  const names = [...new Set(namesEl.value.split('\n').map(s => s.trim()).filter(Boolean))];
+  if (names.length < 3) { errEl.textContent = 'Coloque pelo menos 3 nomes, um em cada linha.'; return; }
+  const s = derange(names); if (!s) { errEl.textContent = 'Não consegui sortear. Tente de novo.'; return; }
+  pairs = {}; names.forEach((n, i) => pairs[n] = s[i]);
+  store.set('pairs', pairs); store.set('names', namesEl.value);
+  errEl.textContent = `Pronto! Sorteio feito com ${names.length} pessoas. Agora cada um vê o seu sem ninguém olhar.`;
+  setupSelect(); reveal.innerHTML = '<span>Escolha seu nome e toque em “Ver quem eu tirei”.</span>';
+  JINGLE.slice(0, 3).forEach(([f, w]) => bell(f, w, .15));
+});
+showB.addEventListener('click', () => {
+  const me = meEl.value; if (!pairs || !pairs[me]) return;
+  reveal.innerHTML = `<div><span>${esc(me)}, você tirou:</span><div class="who">${esc(pairs[me])}</div><span>Guarde segredo!</span></div>`;
+  const r = reveal.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + 40); chime(1.2);
+});
+hideB.addEventListener('click', () => { reveal.innerHTML = '<span>Escondido! Passe para a próxima pessoa.</span>'; });
+setupSelect();
+</script>
+</body>
+</html>
