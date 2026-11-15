@@ -708,7 +708,7 @@ drawOrns();
 
 /* pets */
 (function () {
-  const PETS = [["bitoca", "Bitoca"], ["bonitinha", "Bonitinha"], ["cara-preta-gorda", "Cara Preta Gorda"], ["cara-preta-mae", "Cara Preta Mae"], ["catarina", "Catarina"], ["fofo", "Fofo"], ["fred", "Fred"], ["google", "Google"], ["juca", "Juca"], ["juma", "Juma"], ["lindeza", "Lindeza"], ["maia", "Maia"], ["negrito", "Negrito"], ["panda", "Panda"]];
+  const PETS = [["bitoca", "Bitoca"], ["bonitinha", "Bonitinha"], ["cara-preta-gorda", "Cara Preta Gorda"], ["cara-preta-mae", "Cara Preta Mae"], ["catarina", "Catarina"], ["dora", "Dora"], ["fofo", "Fofo"], ["fred", "Fred"], ["google", "Google"], ["juca", "Juca"], ["juma", "Juma"], ["lindeza", "Lindeza"], ["maia", "Maia"], ["negrito", "Negrito"], ["panda", "Panda"]];
   const parade = document.getElementById('parade'), track = document.getElementById('track');
   const all = PETS.concat(PETS);
   track.innerHTML = all.map(([s, n], i) => `<img src="img/pets/${s}.jpg" alt="${i < PETS.length ? n : ''}" loading="lazy">`).join('');
