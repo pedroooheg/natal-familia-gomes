@@ -198,6 +198,11 @@ footer .sig { font-family: var(--font-script); font-size: 44px; color: var(--gol
 .flypet { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 49; will-change: transform; filter: drop-shadow(0 6px 8px rgba(0,0,0,.35)); }
 .petbar { position: fixed; top: 12px; right: 12px; z-index: 75; display: flex; gap: 8px; }
 .petbar .btn { padding: 8px 16px; font-size: 16px; box-shadow: 0 4px 0 #24603a, 0 4px 18px rgba(0,0,0,.4); }
+.turkey { font-size: 24px; line-height: 1; display: inline-block; }
+#ceiaBtn:hover .turkey { animation: shake .6s; }
+.ceia { position: fixed; inset: 0; z-index: 92; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 14px; padding: 16px; background: rgba(5, 6, 20, .92); }
+.ceia.open { display: flex; }
+.ceia img { max-height: 84vh; max-width: 94vw; border-radius: 18px; border: 8px solid var(--gold); box-shadow: 0 0 0 5px #c8203a, 0 0 70px rgba(255, 216, 107, .6); animation: pop .5s; }
 .petbar .btn img { width: 22px; height: 22px; }
 .parade { position: fixed; inset: 0; z-index: 88; display: none; background: radial-gradient(ellipse at 50% 30%, #2c2c6e, #070920 80%); overflow: hidden; }
 .parade.open { display: block; }
@@ -238,6 +243,7 @@ footer .sig { font-family: var(--font-script); font-size: 44px; color: var(--gol
 <div class="petbar">
   <button class="btn green" id="petsBtn" type="button" aria-pressed="false"><img src="img/heart.png" alt=""><span id="petsLbl">Pets</span></button>
   <button class="btn blue" id="petGalBtn" type="button">Galeria de pets</button>
+  <button class="btn gold" id="ceiaBtn" type="button" aria-label="Ver a ceia de Natal" title="Ver a ceia de Natal"><span class="turkey" aria-hidden="true">🦃</span></button>
 </div>
 <img id="sleigh" src="img/sleigh.png" alt="">
 
@@ -380,6 +386,10 @@ Tia</textarea>
   <button class="btn small show-close" id="pgalClose" type="button" style="position:fixed">Fechar</button>
   <h2>Galeria de pets</h2>
   <div class="pgrid" id="pgrid"></div>
+</div>
+<div class="ceia" id="ceia" role="dialog" aria-modal="true" aria-label="Ceia de Natal">
+  <img src="img/ceia.jpg" alt="Gato deitado na travessa de batatas da ceia de Natal">
+  <button class="btn small" id="ceiaClose" type="button">Fechar</button>
 </div>
 <div class="pbig" id="pbig" role="dialog" aria-modal="true" aria-label="Foto do pet">
   <img id="pbigImg" src="" alt="">
@@ -752,6 +762,11 @@ drawOrns();
     b.addEventListener('click', () => big(i)); pgrid.appendChild(b);
   });
   document.getElementById('petGalBtn').addEventListener('click', () => pgal.classList.add('open'));
+  const ceia = document.getElementById('ceia');
+  document.getElementById('ceiaBtn').addEventListener('click', () => { ceia.classList.add('open'); burst(innerWidth / 2, innerHeight / 2); bell(784, 0, .15); bell(1046, .15, .15); });
+  document.getElementById('ceiaClose').addEventListener('click', () => ceia.classList.remove('open'));
+  ceia.addEventListener('click', e => { if (e.target === ceia) ceia.classList.remove('open'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') ceia.classList.remove('open'); });
   document.getElementById('pgalClose').addEventListener('click', () => pgal.classList.remove('open'));
   document.getElementById('pPrev').addEventListener('click', () => big(pi - 1));
   document.getElementById('pNext').addEventListener('click', () => big(pi + 1));
